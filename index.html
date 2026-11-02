@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Правила жизни для подростков — что делать и чего избегать</title>
+<meta name="description" content="60 правил для подростков 13–19 лет: сон, деньги, отношения, здоровье. Без нотаций.">
+<meta name="theme-color" content="#07070c">
+<link rel="canonical" href="https://example.com/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="Правила жизни для подростков">
+<meta property="og:description" content="60 правил, которые реально работают. Плюс тест привычек, мифы и телефоны доверия.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=630&fit=crop">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- PWA -->
+<link id="manifest-placeholder" rel="manifest">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Библиотеки -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%232ee6a8'/><stop offset='1' stop-color='%235ea8ff'/></linearGradient></defs><rect width='100' height='100' rx='26' fill='url(%23g)'/><text x='50' y='70' font-size='56' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='800' fill='%2307070c'>✦</text></svg>">
+
+<!-- Шрифты -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
+
+<!-- Подключение стилей -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+<div id="progress"></div>
+<div class="blobs" aria-hidden="true"><div class="blob g"></div><div class="blob r"></div><div class="blob b"></div></div>
+
+<header>
+  <nav class="nav">
+    <a class="logo" href="#" style="text-decoration:none;color:inherit">
+      <div class="logo-mark">✦</div>
+      <span>Правила жизни</span>
+    </a>
+    <div class="nav-links">
+      <a href="#do">Что делать</a>
+      <a href="#dont">Чего избегать</a>
+      <a href="#tools">Инструменты</a>
+      <a href="#help">Помощь</a>
+    </div>
+    <div class="nav-actions">
+      <div class="user-profile" id="profileBtn" title="Твой профиль">
+        <div class="avatar-circle" id="userAvatar">👤</div>
+        <div class="user-info">
+          <div class="header-username" id="headerUserName">Игрок</div>
+          <div class="user-info-top">
+            <span id="userLevel">Ур. 1</span>
+            <span class="streak-fire" id="userStreak" title="Дней подряд"><i class="fa-solid fa-fire"></i> 0</span>
+          </div>
+          <div class="xp-bar-bg"><div class="xp-bar-fill" id="userXPBar"></div></div>
+        </div>
+      </div>
+      
+      <button class="icon-btn" id="searchBtn" title="Поиск"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button class="icon-btn" id="achieveBtn" title="Достижения"><i class="fa-solid fa-trophy"></i></button>
+      <button class="icon-btn" id="focusBtn" title="Режим фокуса"><i class="fa-solid fa-eye"></i></button>
+      <button class="icon-btn" id="themeToggle" aria-label="Сменить тему"><i class="fa-solid fa-moon"></i></button>
+      <button class="icon-btn" id="shareBtn" aria-label="Поделиться"><i class="fa-solid fa-link"></i></button>
+    </div>
+  </nav>
+</header>
+
+<aside class="toc" aria-label="Оглавление">
+  <a href="#do">Правила</a>
+  <a href="#dont">Чего избегать</a>
+  <a href="#bonus">Лайфхаки</a>
+  <a href="#myths">Мифы</a>
+  <a href="#situations">Ситуации</a>
+  <a href="#quiz">Тест</a>
+  <a href="#tracker">Трекер</a>
+  <a href="#challenges">Челлендж</a>
+  <a href="#tools">Инструменты</a>
+  <a href="#mood">Настроение</a>
+  <a href="#stories">Истории</a>
+  <a href="#beforeafter">До/после</a>
+  <a href="#help">Помощь</a>
+</aside>
+
+<div class="search-modal" id="searchModal">
+  <div class="search-box">
+    <button class="close-search" id="closeSearch"><i class="fa-solid fa-xmark"></i></button>
+    <input type="text" id="globalSearchInput" placeholder="Искать правило (например: сон, деньги, друзья)...">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- Модалка Достижений -->
+<div class="modal" id="achieveModal" hidden>
+  <div class="modal-card" style="max-width: 600px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+      <h3>Твои достижения</h3>
+      <button class="icon-btn" onclick="document.getElementById('achieveModal').hidden = true"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <p>Собирай трофеи за активность на сайте.</p>
+    <div class="achieve-grid" id="achieveGrid"></div>
+  </div>
+</div>
+
+<!-- Модалка Профиля -->
+<div class="modal" id="avatarModal" hidden>
+  <div class="modal-card" style="max-width: 520px;">
+    <h3>Твой профиль</h3>
+    <p>Статистика и настройки внешнего вида.</p>
+    
+    <div class="profile-hero">
+      <div class="avatar-ring-container">
+        <svg class="avatar-ring" viewBox="0 0 100 100">
+          <circle class="ring-bg" cx="50" cy="50" r="46"></circle>
+          <circle class="ring-progress" id="profileRing" cx="50" cy="50" r="46" stroke-dasharray="289" stroke-dashoffset="289"></circle>
+        </svg>
+        <div class="avatar-large" id="profileMainAvatar">👤</div>
+      </div>
+      <div class="user-title" id="profileTitle">Новичок</div>
+      
+      <input type="text" id="userNameInput" class="user-name-input" placeholder="Твое имя..." maxlength="20">
+      <div style="font-size: 12px; color: var(--muted); margin-top: 4px;" id="profileJoinDate"></div>
+    </div>
+
+    <div class="profile-stats">
+      <div>
+        <i class="fa-solid fa-star" style="color: var(--yellow); margin-bottom: 4px;"></i>
+        <span>Уровень</span>
+        <b id="pLevel">1</b>
+      </div>
+      <div>
+        <i class="fa-solid fa-bolt" style="color: var(--blue); margin-bottom: 4px;"></i>
+        <span>Опыт (XP)</span>
+        <b id="pXP">0 / 100</b>
+      </div>
+      <div>
+        <i class="fa-solid fa-fire" style="color: var(--yellow); margin-bottom: 4px;"></i>
+        <span>Дней подряд</span>
+        <b id="pStreak">0</b>
+      </div>
+    </div>
+
+    <div class="label" style="font-size: 13px; font-weight: 800; margin-bottom: 10px; text-align: left;">Последние достижения:</div>
+    <div class="profile-achievements" id="profileAchievements">
+      <div style="font-size: 12px; color: var(--muted);">Пока нет достижений. Начни с теста!</div>
+    </div>
+
+    <div class="label" style="font-size: 13px; font-weight: 800; margin-bottom: 10px; text-align: left; margin-top: 20px;">Выбери аватарку:</div>
+    <div class="emoji-grid" id="emojiGrid"></div>
+
+    <label class="upload-btn">
+      <i class="fa-solid fa-camera"></i> Загрузить своё фото
+      <input type="file" id="avatarUpload" accept="image/*" style="display:none;">
+    </label>
+
+    <div class="modal-actions" style="margin-top: 24px; display: flex; justify-content: space-between;">
+      <button class="btn btn-ghost" id="exportProfileBtn"><i class="fa-solid fa-download"></i> Скачать</button>
+      <button class="btn btn-primary" onclick="document.getElementById('avatarModal').hidden = true">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<div id="export-card">
+  <h2>Мой прогресс</h2>
+  <p style="color: var(--muted); font-size: 14px;">Правила жизни</p>
+  <div class="stats-row">
+    <div class="stat-item"><b id="expLevel">1</b><span>Уровень</span></div>
+    <div class="stat-item"><b id="expXP">0</b><span>XP</span></div>
+    <div class="stat-item"><b id="expStreak">0</b><span>Дней подряд</span></div>
+  </div>
+  <div style="font-size: 14px; margin-bottom: 20px;">
+    Привычка: <b id="expHabit">Не выбрана</b><br>
+    Прогресс: <b id="expTracker">0/21</b> дней
+  </div>
+  <p style="font-size: 12px; color: var(--muted);">Сделано на сайте «Правила жизни»</p>
+</div>
+
+<main>
+<section class="hero" id="top">
+  <div class="wrap">
+    <h1>Правила жизни,<br>которые <span class="grad">реально работают</span></h1>
+    <p>Никаких нотаций и «в наше время было иначе». Только вещи, которые заметно меняют жизнь уже через пару недель — если начать.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#do">Что стоит делать →</a>
+      <a class="btn btn-ghost" href="#tools">Инструменты</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>60</b><span>правил</span></div>
+      <div class="stat"><b>5</b><span>сфер жизни</span></div>
+      <div class="stat"><b>21</b><span>день трекера</span></div>
+      <div class="stat"><b>0</b><span>нотаций</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="favorites-section">
+  <div class="wrap">
+    <div class="kicker red">Твоя коллекция</div>
+    <h2>Избранное</h2>
+    <div class="grid" id="favGrid"></div>
+  </div>
+</section>
+
+<section id="do" class="do">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker green">Зелёный свет</div>
+      <h2>Что делать</h2>
+      <p class="lead">Эти привычки не требуют таланта или денег. Только немного внимания к себе — и они начинают работать на тебя.</p>
+    </div>
+    <div class="filters reveal" data-target="#gridDo">
+      <button class="filter-btn active" data-filter="all">Все</button>
+      <button class="filter-btn" data-filter="здоровье">Здоровье</button>
+      <button class="filter-btn" data-filter="отношения">Отношения</button>
+      <button class="filter-btn" data-filter="деньги">Деньги</button>
+      <button class="filter-btn" data-filter="будущее">Будущее</button>
+      <button class="filter-btn" data-filter="учеба">Учеба</button>
+    </div>
+    <div class="grid" id="gridDo">
+      <!-- Здоровье (6) -->
+      <div class="card reveal" data-topics="здоровье" data-id="do1">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">01</span><div class="ico"><i class="fa-solid fa-moon"></i></div><h3>Спи 8–9 часов</h3><p>Сон — не «потерянное время», а апгрейд мозга. Не выспался — хуже память, настроение и даже внешность.</p>
+      </div>
+      <div class="card reveal" data-topics="здоровье" data-id="do2">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">02</span><div class="ico"><i class="fa-solid fa-person-running"></i></div><h3>Двигайся каждый день</h3><p>30 минут ходьбы, танцев, спорта — любых. Тело выделяет то, что делает голову спокойнее. Это буквально бесплатный антидепрессант.</p>
+      </div>
+      <div class="card reveal" data-topics="здоровье" data-id="do3">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">03</span><div class="ico"><i class="fa-solid fa-droplet"></i></div><h3>Ешь и пей осознанно</h3><p>Вода вместо сладкой газировки, нормальная еда вместо чипсов на бегу. Не диета — просто не вредить себе.</p>
+      </div>
+      <div class="card reveal" data-topics="здоровье" data-id="do12">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">04</span><div class="ico"><i class="fa-solid fa-hands-bubbles"></i></div><h3>Следи за базовой гигиеной</h3><p>Душ, чистые волосы и зубы — это база. Это не ради чужого одобрения, а ради твоего комфорта и уверенности в себе.</p>
+      </div>
+      <div class="card reveal" data-topics="здоровье" data-id="do16">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">05</span><div class="ico"><i class="fa-solid fa-stethoscope"></i></div><h3>Проходи чекапы</h3><p>Проверять здоровье раз в год — это не для стариков. Это как ТО у машины, только для твоего тела.</p>
+      </div>
+      <div class="card reveal" data-topics="здоровье" data-id="do17">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">06</span><div class="ico"><i class="fa-solid fa-person-walking"></i></div><h3>Не сутулься</h3><p>Следи за осанкой. Кривая спина — это не только некрасиво, но и головные боли, и проблемы с дыханием в будущем.</p>
+      </div>
+
+      <!-- Отношения (6) -->
+      <div class="card reveal" data-topics="отношения" data-id="do5">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">07</span><div class="ico"><i class="fa-solid fa-hand"></i></div><h3>Учись говорить «нет»</h3><p>«Не хочу», «мне неудобно», «мне это не подходит» — полные предложения. Не нужно оправдываться и объяснять.</p>
+      </div>
+      <div class="card reveal" data-topics="отношения" data-id="do8">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">08</span><div class="ico"><i class="fa-solid fa-handshake"></i></div><h3>Выбирай окружение</h3><p>Друзья, рядом с которыми ты становишься лучше — это не случайность, а выбор. Один хороший человек стоит десяти «так себе».</p>
+      </div>
+      <div class="card reveal" data-topics="отношения" data-id="do14">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">09</span><div class="ico"><i class="fa-solid fa-house-chimney"></i></div><h3>Помогай по дому</h3><p>Помыть посуду или вынести мусор — это не «наказание», а базовый навык самостоятельности. Бонус: отношения с родителями заметно улучшаются.</p>
+      </div>
+      <div class="card reveal" data-topics="отношения" data-id="do15">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">10</span><div class="ico"><i class="fa-solid fa-ear-listen"></i></div><h3>Учись слушать</h3><p>Умение слушать важнее умения говорить. Когда друг делится проблемами, ему часто не нужны советы — просто побудь рядом и выслушай.</p>
+      </div>
+      <div class="card reveal" data-topics="отношения" data-id="do18">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">11</span><div class="ico"><i class="fa-solid fa-user-shield"></i></div><h3>Уважай чужие границы</h3><p>Не лезь в чужой телефон, личные вещи и чувства без разрешения. Если человек закрылся — оставь его в покое.</p>
+      </div>
+      <div class="card reveal" data-topics="отношения" data-id="do19">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">12</span><div class="ico"><i class="fa-solid fa-hand-holding-heart"></i></div><h3>Учись прощать</h3><p>Обиды — это как пить яд и ждать, что умрёт другой. Прощать нужно не для них, а для себя, чтобы жить дальше.</p>
+      </div>
+
+      <!-- Деньги (6) -->
+      <div class="card reveal" data-topics="деньги" data-id="do4">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">13</span><div class="ico"><i class="fa-solid fa-coins"></i></div><h3>Откладывай 10% с любых денег</h3><p>Подарили, заработал, нашёл — отложи десятую часть. Через год у тебя будет подушка, которой нет у многих взрослых.</p>
+      </div>
+      <div class="card reveal" data-topics="деньги" data-id="do20">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">14</span><div class="ico"><i class="fa-solid fa-receipt"></i></div><h3>Веди учет расходов</h3><p>Записывай траты. Не чтобы себя ограничивать, а чтобы понимать, куда утекают деньги. Это первый шаг к финансовой свободе.</p>
+      </div>
+      <div class="card reveal" data-topics="деньги" data-id="do21">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">15</span><div class="ico"><i class="fa-solid fa-laptop-code"></i></div><h3>Ищи подработку</h3><p>Не жди, пока деньги появятся сами. Фриланс, курьер, репетиторство — ищи то, что даст тебе первые собственные деньги.</p>
+      </div>
+      <div class="card reveal" data-topics="деньги" data-id="do22">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">16</span><div class="ico"><i class="fa-solid fa-wallet"></i></div><h3>Изучай финграмотность</h3><p>Читай про инфляцию, сложный процент и базовые инвестиции. Чем раньше начнешь, тем проще будет дальше.</p>
+      </div>
+      <div class="card reveal" data-topics="деньги" data-id="do23">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">17</span><div class="ico"><i class="fa-solid fa-cart-shopping"></i></div><h3>Не трать на импульсивные покупки</h3><p>Видишь крутую вещь? Подожди 24 часа. Если утром всё ещё хочешь — бери. В 80% случаев желание пропадает.</p>
+      </div>
+      <div class="card reveal" data-topics="деньги" data-id="do24">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">18</span><div class="ico"><i class="fa-solid fa-chart-line"></i></div><h3>Инвестируй в свои навыки</h3><p>Лучшая инвестиция — это ты. Курс, книги, мастер-класс. Твои знания принесут больше, чем просто отложенные деньги.</p>
+      </div>
+
+      <!-- Будущее (6) -->
+      <div class="card reveal" data-topics="будущее" data-id="do6">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">19</span><div class="ico"><i class="fa-solid fa-brain"></i></div><h3>Ошибайся и пробуй новое</h3><p>Сейчас самое дешёвое время для ошибок. Не попробуешь — не узнаешь, что тебе вообще нравится.</p>
+      </div>
+      <div class="card reveal" data-topics="будущее" data-id="do7">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">20</span><div class="ico"><i class="fa-solid fa-book"></i></div><h3>Учись вне школы</h3><p>Школа даёт базу, но не всё. Найди то, что тебе интересно, и копай глубже — навык, язык, код, музыка, ремесло.</p>
+      </div>
+      <div class="card reveal" data-topics="будущее" data-id="do9">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">21</span><div class="ico"><i class="fa-solid fa-compass"></i></div><h3>Задавай себе вопрос «а что дальше?»</h3><p>Раз в месяц остановись и подумай: туда ли я иду? Это спасает от того, чтобы просто плыть по течению чужих ожиданий.</p>
+      </div>
+      <div class="card reveal" data-topics="будущее" data-id="do13">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">22</span><div class="ico"><i class="fa-solid fa-note-sticky"></i></div><h3>Выгружай мысли в блокнот</h3><p>Когда в голове «каша» из проблем, выгрузи их на бумагу или в заметки. Записанные страхи теряют силу, а задачи обретают порядок.</p>
+      </div>
+      <div class="card reveal" data-topics="будущее" data-id="do27">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">23</span><div class="ico"><i class="fa-solid fa-bullseye"></i></div><h3>Ставь цели</h3><p>Не просто «хочу круто жить», а конкретно: «выучить английский до уровня B2 к концу года». Цель — это план с датой.</p>
+      </div>
+      <div class="card reveal" data-topics="будущее" data-id="do28">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">24</span><div class="ico"><i class="fa-solid fa-folder-open"></i></div><h3>Создай портфолио</h3><p>Сохраняй свои лучшие проекты, рисунки, тексты или код в одном месте. Это твоё лицо на будущем собеседовании.</p>
+      </div>
+
+      <!-- Учеба (6) -->
+      <div class="card reveal" data-topics="учеба" data-id="do11">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">25</span><div class="ico"><i class="fa-solid fa-book-open"></i></div><h3>Читай каждый день</h3><p>Даже 10 страниц в день — это 10+ книг в год. Книги прокачивают эмпатию, словарный запас и учат думать, а не просто потреблять контент.</p>
+      </div>
+      <div class="card reveal" data-topics="учеба" data-id="do25">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">26</span><div class="ico"><i class="fa-solid fa-puzzle-piece"></i></div><h3>Используй техники запоминания</h3><p>Зазубривание не работает. Используй ассоциации, карточки и проговаривание вслух, чтобы мозг действительно запомнил.</p>
+      </div>
+      <div class="card reveal" data-topics="учеба" data-id="do26">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">27</span><div class="ico"><i class="fa-solid fa-circle-question"></i></div><h3>Задавай вопросы</h3><p>Если что-то непонятно — спрашивай. Не бойся выглядеть глупо. Глупо — это сидеть с застывшим лицом и ничего не понимать.</p>
+      </div>
+      <div class="card reveal" data-topics="учеба" data-id="do29">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">28</span><div class="ico"><i class="fa-solid fa-file-lines"></i></div><h3>Составляй конспекты</h3><p>Пиши кратко своими словами. Переписывание учебника не помогает, а структурирование информации откладывается в памяти.</p>
+      </div>
+      <div class="card reveal" data-topics="учеба" data-id="do30">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">29</span><div class="ico"><i class="fa-solid fa-graduation-cap"></i></div><h3>Найди свой стиль обучения</h3><p>Кто-то лучше воспринимает на слух, кто-то — глазами. Пойми, как учиться проще именно тебе, и используй это.</p>
+      </div>
+      <div class="card reveal" data-topics="учеба" data-id="do31">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">30</span><div class="ico"><i class="fa-solid fa-language"></i></div><h3>Учи иностранный язык</h3><p>Это не только про оценки. Язык открывает доступ к другим культурам, мемам, фильмам и дает преимущество в работе.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="dont" class="dont">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker red">Красный свет</div>
+      <h2>Чего лучше не делать</h2>
+      <p class="lead">Здесь не про «нельзя, потому что я так сказал». А про вещи, которые реально стоят тебе здоровья, денег, времени или уважения к себе.</p>
+    </div>
+    <div class="filters reveal" data-target="#gridDont">
+      <button class="filter-btn active" data-filter="all">Все</button>
+      <button class="filter-btn" data-filter="здоровье">Здоровье</button>
+      <button class="filter-btn" data-filter="отношения">Отношения</button>
+      <button class="filter-btn" data-filter="деньги">Деньги</button>
+      <button class="filter-btn" data-filter="будущее">Будущее</button>
+      <button class="filter-btn" data-filter="учеба">Учеба</button>
+    </div>
+    <div class="grid" id="gridDont">
+      <!-- Здоровье (6) -->
+      <div class="card reveal" data-topics="здоровье" data-id="dont1">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">01</span><div class="ico"><i class="fa-solid fa-mobile-screen"></i></div><h3>Не живи в телефоне до утра</h3><p>Экран перед сном сбивает сон, а сбитый сон тянет за собой всё остальное: учёбу, настроение, внешний вид.</p>
+      </div>
+      <div class="card reveal" data-topics="здоровье" data-id="dont2">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">02</span><div class="ico"><i class="fa-solid fa-ban-smoking"></i></div><h3>Не начинай с сигарет, вейпов и алкоголя</h3><p>«Попробовать один раз» обычно не заканчивается одним разом. Зависимость начинается раньше, чем ты её заметишь.</p>
+      </div>
+      <div class="card reveal" data-topics="здоровье" data-id="dont11">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">03</span><div class="ico"><i class="fa-solid fa-heart-pulse"></i></div><h3>Не игнорируй боль в теле</h3><p>Головная боль, хруст, боль в животе — это не «ерунда, пройдёт». Организм сигнализирует, что пора отдохнуть или обратиться к врачу.</p>
+      </div>
+      <div class="card reveal" data-topics="здоровье" data-id="dont14">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">04</span><div class="ico"><i class="fa-solid fa-burger"></i></div><h3>Не заедай стресс фастфудом</h3><p>Сладкое и жирное дают удовольствие на 5 минут, а потом оставляют тяжесть и прыщи. Если грустно — лучше прогуляйся или попей воды.</p>
+      </div>
+      <div class="card reveal" data-topics="здоровье" data-id="dont16">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">05</span><div class="ico"><i class="fa-solid fa-person-circle-xmark"></i></div><h3>Не сиди с неровной спиной</h3><p>Сгорбленная спина над телефоном — прямой путь к сколиозу и болям. Держи спину прямо, пока молодой.</p>
+      </div>
+      <div class="card reveal" data-topics="здоровье" data-id="dont17">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">06</span><div class="ico"><i class="fa-solid fa-battery-quarter"></i></div><h3>Не пей энергетики</h3><p>Они не дают энергию, а берут её взаймы у твоего сердца. Спать ты всё равно захочешь, только сердце будет биться чаще.</p>
+      </div>
+
+      <!-- Отношения (6) -->
+      <div class="card reveal" data-topics="отношения" data-id="dont3">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">07</span><div class="ico"><i class="fa-solid fa-camera"></i></div><h3>Не сравнивай себя с чужими фото</h3><p>В ленте — лучший кадр из тысячи, с фильтром и правильным светом. Сравнивать с этим свою реальность — просто нечестная игра.</p>
+      </div>
+      <div class="card reveal" data-topics="отношения" data-id="dont4">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">08</span><div class="ico"><i class="fa-solid fa-heart-crack"></i></div><h3>Не терпи токсичные отношения</h3><p>Если человек постоянно обесценивает, контролирует или унижает — это не «любовь» и не «дружба». Уходить можно и нужно.</p>
+      </div>
+      <div class="card reveal" data-topics="отношения" data-id="dont7">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">09</span><div class="ico"><i class="fa-solid fa-lock"></i></div><h3>Не выкладывай в сеть всё личное</h3><p>Адрес, школа, геолокация, документы, интимные фото. Интернет помнит всё, а удалить навсегда почти невозможно.</p>
+      </div>
+      <div class="card reveal" data-topics="отношения" data-id="dont8">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">10</span><div class="ico"><i class="fa-solid fa-hand-fist"></i></div><h3>Не решай конфликты агрессией</h3><p>Кулаки и оскорбления выигрывают спор на минуту и портят репутацию на годы. Слова работают дольше.</p>
+      </div>
+      <div class="card reveal" data-topics="отношения" data-id="dont9">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">11</span><div class="ico"><i class="fa-solid fa-comment-slash"></i></div><h3>Не молчи о травле</h3><p>Если тебя или кого-то рядом травят — молчание защищает только того, кто травит. Скажи взрослому, которому доверяешь.</p>
+      </div>
+      <div class="card reveal" data-topics="отношения" data-id="dont12">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">12</span><div class="ico"><i class="fa-solid fa-masks-theater"></i></div><h3>Не пытайся понравиться всем</h3><p>Если ты будешь подстраиваться под каждого, ты потеряешь себя. Кому-то ты не зайдешь — и это нормально. Будь собой, а «твои» люди найдутся.</p>
+      </div>
+
+      <!-- Деньги (6) -->
+      <div class="card reveal" data-topics="деньги" data-id="dont5">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">13</span><div class="ico"><i class="fa-solid fa-credit-card"></i></div><h3>Не влезай в долги ради понтов</h3><p>Кредит на телефон, чтобы «как у всех», — плохая сделка. Вещь подешевеет, а долг останется.</p>
+      </div>
+      <div class="card reveal" data-topics="деньги" data-id="dont13">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">14</span><div class="ico"><i class="fa-solid fa-key"></i></div><h3>Не делись паролями</h3><p>Пароль от соцсетей, телефона или банковской карты (даже если это карта родителей) — это твоя личная зона безопасности. Даже лучшим друзьям.</p>
+      </div>
+      <div class="card reveal" data-topics="деньги" data-id="dont18">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">15</span><div class="ico"><i class="fa-solid fa-hand-holding-dollar"></i></div><h3>Не бери микрозаймы</h3><p>Это долговая яма. Проценты там космические, а последствия могут испортить тебе кредитную историю в самом начале.</p>
+      </div>
+      <div class="card reveal" data-topics="деньги" data-id="dont19">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">16</span><div class="ico"><i class="fa-solid fa-gamepad"></i></div><h3>Не сливай деньги на донаты и лутбоксы</h3><p>Игра закроется, а деньги не вернутся. Не поддавайся на уловки разработчиков, это твои реальные карманные.</p>
+      </div>
+      <div class="card reveal" data-topics="деньги" data-id="dont20">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">17</span><div class="ico"><i class="fa-solid fa-handshake-slash"></i></div><h3>Не давай в долг, если не готов потерять</h3><p>Давая другу денег, будь готов к тому, что он их не вернёт. Это проверка отношений. Если это критично — просто не давай.</p>
+      </div>
+      <div class="card reveal" data-topics="деньги" data-id="dont21">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">18</span><div class="ico"><i class="fa-solid fa-mask"></i></div><h3>Не верь в «лёгкие деньги»</h3><p>Схемы, казино, ставки, «инвестиции» с доходностью 1000% — это развод. Бесплатный сыр только в мышеловке.</p>
+      </div>
+
+      <!-- Будущее (6) -->
+      <div class="card reveal" data-topics="будущее" data-id="dont6">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">19</span><div class="ico"><i class="fa-solid fa-hourglass-half"></i></div><h3>Не откладывай важное «на потом»</h3><p>«Потом» обычно не наступает. Пять минут сейчас стоят трёх часов паники в последний день.</p>
+      </div>
+      <div class="card reveal" data-topics="будущее" data-id="dont10">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">20</span><div class="ico"><i class="fa-solid fa-tag"></i></div><h3>Не позволяй другим решать, кто ты</h3><p>«Ты не потянешь», «тебе не дано», «такие, как ты, не добиваются» — это про них, а не про тебя.</p>
+      </div>
+      <div class="card reveal" data-topics="будущее" data-id="dont22">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">21</span><div class="ico"><i class="fa-solid fa-scale-unbalanced"></i></div><h3>Не сравнивай свой путь с другими</h3><p>Твой одноклассник уже знает, кем хочет быть, а ты нет? Это нормально. У каждого свой темп. Не сходи с дистанции.</p>
+      </div>
+      <div class="card reveal" data-topics="будущее" data-id="dont23">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">22</span><div class="ico"><i class="fa-solid fa-triangle-exclamation"></i></div><h3>Не бойся ошибок</h3><p>Ошибка — это не провал, а данные для следующего шага. Тот, кто ничего не делает, не ошибается.</p>
+      </div>
+      <div class="card reveal" data-topics="будущее" data-id="dont24">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">23</span><div class="ico"><i class="fa-solid fa-compass-drafting"></i></div><h3>Не откладывай выбор профессии</h3><p>Пробовать и ошибаться нужно сейчас, пока ты учишься. Потом будет дороже и дольше.</p>
+      </div>
+      <div class="card reveal" data-topics="будущее" data-id="dont15">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">24</span><div class="ico"><i class="fa-solid fa-face-angry"></i></div><h3>Не принимай решения на эмоциях</h3><p>В гневе или грусти легко наговорить лишнего или сгоряча всё удалить. Сделай глубокий вдох и отложи важные решения хотя бы до утра.</p>
+      </div>
+
+      <!-- Учеба (6) -->
+      <div class="card reveal" data-topics="учеба" data-id="dont25">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">25</span><div class="ico"><i class="fa-solid fa-clipboard-question"></i></div><h3>Не списывай постоянно</h3><p>Списал контрольную — получил оценку, но не знания. На экзамене или в вузе списать будет сложнее.</p>
+      </div>
+      <div class="card reveal" data-topics="учеба" data-id="dont26">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">26</span><div class="ico"><i class="fa-solid fa-clock"></i></div><h3>Не учи всё в последнюю ночь</h3><p>Зубрёжка за ночь не работает. К утру ты забудешь всё, что выучил. Мозгу нужно время, чтобы обработать информацию.</p>
+      </div>
+      <div class="card reveal" data-topics="учеба" data-id="dont27">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">27</span><div class="ico"><i class="fa-solid fa-comments"></i></div><h3>Не бойся задавать вопросы</h3><p>Если что-то непонятно — спрашивай. Лучше переспросить и понять, чем молчать и ничего не усвоить.</p>
+      </div>
+      <div class="card reveal" data-topics="учеба" data-id="dont28">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">28</span><div class="ico"><i class="fa-solid fa-globe"></i></div><h3>Не верь всему, что в интернете</h3><p>Видео, статьи, Википедия — всё может ошибаться или врать. Учись проверять факты в нескольких источниках.</p>
+      </div>
+      <div class="card reveal" data-topics="учеба" data-id="dont29">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">29</span><div class="ico"><i class="fa-solid fa-pen-to-square"></i></div><h3>Не забивай на домашку</h3><p>Домашка — это тренировка. Если ты не тренируешься, ты не научишься решать задачи. Учись справляться с рутиной.</p>
+      </div>
+      <div class="card reveal" data-topics="учеба" data-id="dont30">
+        <button class="fav-btn"><i class="fa-regular fa-heart"></i></button>
+        <span class="num">30</span><div class="ico"><i class="fa-solid fa-award"></i></div><h3>Не думай, что оценки — это всё</h3><p>Оценки важны, но это не мера твоей личности. Двоечник может стать успешным бизнесменом, а отличник — выгореть на первой работе.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="bonus">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker">Бонус</div>
+      <h2>8 правил, которые спасают</h2>
+      <p class="lead">Маленькие ментальные кнопки, которые выручают в самые неудобные моменты.</p>
+    </div>
+    <div class="bonus-grid">
+      <div class="bonus reveal"><div class="tag">Правило 24 часов</div><h3>Не отвечай в гневе</h3><p>Хочешь написать злое сообщение? Напиши — и не отправляй сутки. За это время половина проблем просто испарится.</p></div>
+      <div class="bonus reveal"><div class="tag">Правило трёх вопросов</div><h3>Это правда? Это полезно? Это добро?</h3><p>Перед тем как что-то сказать или выложить — прогони через три вопроса. Хотя бы два «да» — можно.</p></div>
+      <div class="bonus reveal"><div class="tag">Правило 5 минут</div><h3>Просто начни</h3><p>Не хочешь делать — договорись с собой на пять минут. Дальше обычно затягивает: самое сложное — начать.</p></div>
+      <div class="bonus reveal"><div class="tag">Правило дела</div><h3>Сначала дело, потом телефон</h3><p>Сделал задачу — взял телефон. А не наоборот: иначе «на пять минут» превращается в два часа.</p></div>
+      <div class="bonus reveal"><div class="tag">Правило 10 минут</div><h3>Подожди перед покупкой</h3><p>Хочешь что-то купить? Подожди 10 минут. Если желание не пропало — бери. Это спасет тебя от кучи импульсивных трат.</p></div>
+      <div class="bonus reveal"><div class="tag">Правило зеркала</div><h3>Улыбнись себе</h3><p>Встань перед зеркалом и улыбнись. Даже если настроение на нуле, мозг через 2 минуты начнет вырабатывать гормоны радости.</p></div>
+      <div class="bonus reveal"><div class="tag">Правило 3 главных задач</div><h3>Съешь слона по кусочкам</h3><p>Утром напиши 3 самые важные задачи на день. Все остальное — потом. Это спасает от перегрузки и чувства, что ты ничего не успел.</p></div>
+      <div class="bonus reveal"><div class="tag">Правило одной минуты</div><h3>Сделай прямо сейчас</h3><p>Если на дело нужно меньше минуты (помыть чашку, выбросить фантик), сделай это сразу. Не копи мелкие дела.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="myths">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker">Мифы vs реальность</div>
+      <h2>Во что верят зря</h2>
+      <p class="lead">Нажми на карточку, чтобы увидеть, как на самом деле.</p>
+    </div>
+    <div class="myths-grid">
+      <!-- Миф 1 -->
+      <div class="myth reveal" tabindex="0" role="button">
+        <div class="myth-inner">
+          <div class="myth-face myth-front">
+            <span class="myth-tag">Миф</span>
+            <p>«После 18:00 есть нельзя — иначе поправишься».</p>
+            <span class="myth-hint">нажми →</span>
+            <i class="fa-solid fa-burger myth-icon"></i>
+          </div>
+          <div class="myth-face myth-back">
+            <span class="myth-tag real">Реальность</span>
+            <p>Важен общий баланс калорий и качество еды за день, а не время. Плотный ужин за 3 часа до сна ничем не хуже обеда.</p>
+            <i class="fa-solid fa-clock myth-icon"></i>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Миф 2 -->
+      <div class="myth reveal" tabindex="0" role="button">
+        <div class="myth-inner">
+          <div class="myth-face myth-front">
+            <span class="myth-tag">Миф</span>
+            <p>«Мозг работает лучше под музыку и с телефоном рядом».</p>
+            <span class="myth-hint">нажми →</span>
+            <i class="fa-solid fa-headphones myth-icon"></i>
+          </div>
+          <div class="myth-face myth-back">
+            <span class="myth-tag real">Реальность</span>
+            <p>Многозадачность снижает концентрацию. Одно уведомление — и ты теряешь до 20 минут, чтобы вернуться в поток.</p>
+            <i class="fa-solid fa-brain myth-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Миф 3 -->
+      <div class="myth reveal" tabindex="0" role="button">
+        <div class="myth-inner">
+          <div class="myth-face myth-front">
+            <span class="myth-tag">Миф</span>
+            <p>«Если не выспался — отоспишься на выходных».</p>
+            <span class="myth-hint">нажми →</span>
+            <i class="fa-solid fa-bed myth-icon"></i>
+          </div>
+          <div class="myth-face myth-back">
+            <span class="myth-tag real">Реальность</span>
+            <p>«Долг сна» копится и не компенсируется за два дня. Стабильные 8 часов каждый день работают лучше, чем 6 + 12 в субботу.</p>
+            <i class="fa-solid fa-battery-full myth-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Миф 4 -->
+      <div class="myth reveal" tabindex="0" role="button">
+        <div class="myth-inner">
+          <div class="myth-face myth-front">
+            <span class="myth-tag">Миф</span>
+            <p>«Настоящий друг всегда согласится и поддержит любое решение».</p>
+            <span class="myth-hint">нажми →</span>
+            <i class="fa-solid fa-thumbs-up myth-icon"></i>
+          </div>
+          <div class="myth-face myth-back">
+            <span class="myth-tag real">Реальность</span>
+            <p>Друг умеет сказать «мне кажется, это плохая идея». Согласие на всё — это не дружба, а безразличие.</p>
+            <i class="fa-solid fa-handshake myth-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Миф 5 -->
+      <div class="myth reveal" tabindex="0" role="button">
+        <div class="myth-inner">
+          <div class="myth-face myth-front">
+            <span class="myth-tag">Миф</span>
+            <p>«Вейпы безопаснее сигарет, потому что там “просто пар”».</p>
+            <span class="myth-hint">нажми →</span>
+            <i class="fa-solid fa-smoking myth-icon"></i>
+          </div>
+          <div class="myth-face myth-back">
+            <span class="myth-tag real">Реальность</span>
+            <p>В аэрозоле — никотин, тяжёлые металлы и ароматизаторы, которые бьют по лёгким. «Безопасной дозы» не существует.</p>
+            <i class="fa-solid fa-lungs myth-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Миф 6 -->
+      <div class="myth reveal" tabindex="0" role="button">
+        <div class="myth-inner">
+          <div class="myth-face myth-front">
+            <span class="myth-tag">Миф</span>
+            <p>«Психолог — это для “ненормальных”».</p>
+            <span class="myth-hint">нажми →</span>
+            <i class="fa-solid fa-couch myth-icon"></i>
+          </div>
+          <div class="myth-face myth-back">
+            <span class="myth-tag real">Реальность</span>
+            <p>Психолог — как тренер для головы. С ним разбирают сложное: тревогу, отношения, выбор. Это про силу, а не про слабость.</p>
+            <i class="fa-solid fa-heart-pulse myth-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Миф 7 -->
+      <div class="myth reveal" tabindex="0" role="button">
+        <div class="myth-inner">
+          <div class="myth-face myth-front">
+            <span class="myth-tag">Миф</span>
+            <p>«Нужно пить ровно 8 стаканов воды в день».</p>
+            <span class="myth-hint">нажми →</span>
+            <i class="fa-solid fa-glass-water myth-icon"></i>
+          </div>
+          <div class="myth-face myth-back">
+            <span class="myth-tag real">Реальность</span>
+            <p>Норма воды индивидуальна. Она зависит от веса, активности и погоды. Ориентируйся на жажду, а не на мифические 8 стаканов.</p>
+            <i class="fa-solid fa-droplet myth-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Миф 8 -->
+      <div class="myth reveal" tabindex="0" role="button">
+        <div class="myth-inner">
+          <div class="myth-face myth-front">
+            <span class="myth-tag">Миф</span>
+            <p>«Чтобы похудеть, нужно голодать».</p>
+            <span class="myth-hint">нажми →</span>
+            <i class="fa-solid fa-utensils myth-icon"></i>
+          </div>
+          <div class="myth-face myth-back">
+            <span class="myth-tag real">Реальность</span>
+            <p>Голод замедляет метаболизм. Организм думает, что наступил кризис, и начинает запасать жир. Нужен дефицит калорий, а не голод.</p>
+            <i class="fa-solid fa-apple-whole myth-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Миф 9 -->
+      <div class="myth reveal" tabindex="0" role="button">
+        <div class="myth-inner">
+          <div class="myth-face myth-front">
+            <span class="myth-tag">Миф</span>
+            <p>«С возрастом учиться становится слишком поздно».</p>
+            <span class="myth-hint">нажми →</span>
+            <i class="fa-solid fa-hourglass-end myth-icon"></i>
+          </div>
+          <div class="myth-face myth-back">
+            <span class="myth-tag real">Реальность</span>
+            <p>Нейропластичность (способность мозга меняться) сохраняется всю жизнь. Учить языки или новую профессию можно и в 20, и в 50 лет.</p>
+            <i class="fa-solid fa-graduation-cap myth-icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="situations">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker red">Жизненные кейсы</div>
+      <h2>Как поступить?</h2>
+      <p class="lead">Ситуации, в которых оказывался каждый. Вот как можно выйти из них с достоинством.</p>
+    </div>
+    <div class="situation-card reveal">
+      <h3><i class="fa-solid fa-pen"></i> Друг просит списать</h3>
+      <p>Ты знаешь ответы, а друг — нет. Он просит «просто дать глянуть».</p>
+      <div class="sol"><b>Как ответить:</b> «Слушай, я не хочу, чтобы нас обоих поймали. Давай я лучше объясню тебе тему после уроков / на перемене». Так ты сохраняешь дружбу и помогаешь по-настоящему.</div>
+    </div>
+    <div class="situation-card reveal">
+      <h3><i class="fa-solid fa-user-secret"></i> Родители читают переписки</h3>
+      <p>Ты узнал, что мама или папа проверяют твой телефон без спроса.</p>
+      <div class="sol"><b>Как ответить:</b> Не устраивай скандал. Скажи спокойно: «Мне неприятно, что вы читаете мои сообщения. Это подрывает моё доверие к вам. Если вы за меня волнуетесь, давайте договоримся, о чём я буду вам рассказывать сам». Покажи, что ты готов к диалогу.</div>
+    </div>
+    <div class="situation-card reveal">
+      <h3><i class="fa-solid fa-user-group"></i> Травля в классе</h3>
+      <p>Одноклассники начали шутить над твоим другом, и это переходит границы.</p>
+      <div class="sol"><b>Как поступить:</b> Не смейся. Скажи: «Это уже не смешно, прекратите». Если не помогает — подойди к обидчикам один на один или сообщи классному руководителю/психологу. Твой друг должен знать, что он не один.</div>
+    </div>
+    <div class="situation-card reveal">
+      <h3><i class="fa-solid fa-wine-glass-empty"></i> Друзья предлагают выпить/покурить</h3>
+      <p>В компании передают «по кругу», а ты не хочешь, но боишься выглядеть белой вороной.</p>
+      <div class="sol"><b>Как поступить:</b> «Я пас, мне не заходит». Не нужно читать лекций о вреде. Если начинают давить — просто уйди. Настоящие друзья не будут заставлять тебя делать то, что ты не хочешь.</div>
+    </div>
+    <div class="situation-card reveal">
+      <h3><i class="fa-solid fa-globe"></i> Травля в интернете</h3>
+      <p>В школьном чате или соцсетях начали писать гадости в твой адрес или распускать слухи.</p>
+      <div class="sol"><b>Как поступить:</b> Не вступай в перепалку. Сделай скриншоты, заблокируй обидчиков и пожалуйся на них. Если не прекращается — покажи скриншоты родителям или классному руководителю. Молчать нельзя.</div>
+    </div>
+    <div class="situation-card reveal">
+      <h3><i class="fa-solid fa-users"></i> Родители сравнивают с другими</h3>
+      <p>«А вот сын тети Вали уже выиграл олимпиаду, а ты?»</p>
+      <div class="sol"><b>Как ответить:</b> «Я понимаю, что ты хочешь для меня лучшего. Но когда меня с кем-то сравнивают, мне кажется, что вы не цените меня такого, какой я есть. У меня есть свои сильные стороны, просто они другие».</div>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker">Проверь себя</div>
+      <h2>Тест привычек</h2>
+      <p class="lead">10 вопросов. Отвечай честно — результат видишь только ты.</p>
+    </div>
+    <div class="quiz" id="quizBox"></div>
+  </div>
+</section>
+
+<section id="tracker">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker">21 день</div>
+      <h2>Трекер привычки</h2>
+      <p class="lead">Выбери одну привычку и отмечай каждый день. Прогресс сохраняется в браузере.</p>
+    </div>
+    <div class="tracker">
+      <div class="tracker-head">
+        <input id="habitName" placeholder="Например: спать 8 часов" maxlength="60">
+        <button class="btn btn-ghost" id="habitReset" type="button">Сброс</button>
+      </div>
+      <div class="tracker-grid" id="trackerGrid"></div>
+      <div class="tracker-progress">
+        <div class="tracker-bar"><i id="trackerBar"></i></div>
+        <span id="trackerLabel">0 / 21</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="challenges">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker green">Вызов себе</div>
+      <h2>Сезонный челлендж</h2>
+      <p class="lead">Попробуй продержаться 7 дней. Это проще, чем кажется!</p>
+    </div>
+    <div class="challenge-card reveal" id="challengeCard">
+      <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 8px;">7 дней без сахара</h3>
+      <p style="color: var(--muted); font-size: 14px; margin-bottom: 16px;">Отмечай дни без сладкого (газировки, конфеты, пирожные).</p>
+      <div class="challenge-grid" id="challengeGrid"></div>
+      <div style="margin-top: 16px; font-weight: 800;" id="challengeStatus">0 / 7 дней</div>
+    </div>
+  </div>
+</section>
+
+<section id="tools">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker blue">Помощь себе</div>
+      <h2>Инструменты</h2>
+      <p class="lead">Простые вещи, которые помогают сфокусироваться или успокоиться прямо сейчас.</p>
+    </div>
+    <div class="tools-grid">
+      <div class="tool-card reveal">
+        <h3><i class="fa-solid fa-stopwatch" style="color: var(--blue); margin-right: 8px;"></i>Помодоро</h3>
+        <div class="pomo-time" id="pomoTime">25:00</div>
+        <div class="pomo-actions">
+          <button class="pomo-btn" id="pomoStart">Старт</button>
+          <button class="pomo-btn outline" id="pomoReset">Сброс</button>
+        </div>
+      </div>
+
+      <div class="tool-card reveal">
+        <h3><i class="fa-solid fa-wind" style="color: var(--green); margin-right: 8px;"></i>Дыхание</h3>
+        <div class="breath-circle" id="breathCircle">
+          <span id="breathText">Готов?</span>
+        </div>
+        <button class="btn btn-primary" id="breathBtn" style="width: 100%; justify-content: center;">Начать</button>
+      </div>
+
+      <div class="tool-card reveal">
+        <h3><i class="fa-solid fa-list-check" style="color: var(--green); margin-right: 8px;"></i>Мое утро</h3>
+        <div class="check-list" id="morningChecklist"></div>
+      </div>
+
+      <div class="tool-card reveal">
+        <h3><i class="fa-solid fa-shield-halved" style="color: var(--yellow); margin-right: 8px;"></i>Как отказать</h3>
+        <div class="refusal-box" id="refusalText">Нажми кнопку, чтобы получить вежливый отказ</div>
+        <button class="btn btn-yellow" id="refusalBtn">Сгенерировать</button>
+      </div>
+
+      <div class="tool-card reveal">
+        <h3><i class="fa-solid fa-bed" style="color: var(--blue); margin-right: 8px;"></i>Калькулятор сна</h3>
+        <div class="calc-row">
+          <label>Мне вставать в:</label>
+          <input type="time" id="wakeTime" value="07:00">
+        </div>
+        <div class="calc-result" id="sleepResult">Во сколько лечь?</div>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 8px;">Учитывая 90-минутные циклы и 15 минут на засыпание.</p>
+      </div>
+
+      <div class="tool-card reveal">
+        <h3><i class="fa-solid fa-piggy-bank" style="color: var(--green); margin-right: 8px;"></i>Копилка и мечта</h3>
+        
+        <div class="calc-row" style="margin-bottom: 12px;">
+          <label>На что копишь?</label>
+          <input type="text" id="dreamName" placeholder="Например: Наушники" style="text-align: left; font-size: 14px;">
+        </div>
+        
+        <div style="display: flex; gap: 10px; width: 100%;">
+          <div class="calc-row" style="flex: 1; margin-bottom: 0;">
+            <label>Цена (₽)</label>
+            <input type="number" id="dreamCost" placeholder="15000" value="10000">
+          </div>
+          <div class="calc-row" style="flex: 1; margin-bottom: 0;">
+            <label>В неделю (₽)</label>
+            <input type="number" id="savingsInput" placeholder="500" value="500">
+          </div>
+        </div>
+
+        <div class="calc-result" id="dreamResult" style="background: var(--green-soft); border-color: var(--green-brd); color: var(--green); margin-top: 16px;">
+          Укажи данные
+        </div>
+        
+        <div class="calc-result" id="savingsResult" style="background: var(--blue-soft); border-color: var(--blue-brd); color: var(--blue); margin-top: 10px;">
+          Через год: 26 000
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="mood">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker yellow">Рефлексия</div>
+      <h2>Дневник настроения</h2>
+      <p class="lead">Как ты сегодня? Отмечай каждый день, и через неделю увидишь свой график.</p>
+    </div>
+    <div class="tool-card reveal" style="max-width: 600px; margin: 0 auto;">
+      <div class="mood-grid" id="moodGrid">
+        <button class="mood-btn" data-mood="5"><i class="fa-regular fa-face-grin-stars"></i><span>Отлично</span></button>
+        <button class="mood-btn" data-mood="4"><i class="fa-regular fa-face-smile"></i><span>Хорошо</span></button>
+        <button class="mood-btn" data-mood="3"><i class="fa-regular fa-face-meh"></i><span>Норм</span></button>
+        <button class="mood-btn" data-mood="2"><i class="fa-regular fa-face-frown"></i><span>Плохо</span></button>
+        <button class="mood-btn" data-mood="1"><i class="fa-regular fa-face-tired"></i><span>Ужасно</span></button>
+      </div>
+      <div class="mood-history" id="moodHistory"></div>
+      <p style="font-size: 12px; color: var(--muted); margin-top: 16px;" id="moodStatus">Нажми на иконку, чтобы сохранить настроение.</p>
+    </div>
+  </div>
+</section>
+
+<section id="stories">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker">Голоса</div>
+      <h2>Что бы ты сказал себе в 14 лет</h2>
+      <p class="lead">Твоя фраза уйдёт на проверку модератору. Если она пройдёт проверку — появится на сайте.</p>
+    </div>
+    <div class="stories" id="storiesList">
+      <div class="story"><p>«Перестань ждать, что кто-то придёт и всё исправит. Начни с себя — даже маленький шаг считается».</p></div>
+      <div class="story"><p>«Не трать годы на людей, которые заставляют тебя сомневаться в себе. Найди тех, с кем легко».</p></div>
+      <div class="story"><p>«Сон — это не лень. Это база, без которой всё остальное не работает».</p></div>
+    </div>
+    <form class="form" id="storyForm" autocomplete="off">
+      <textarea id="storyText" maxlength="240" placeholder="Твоя фраза (до 240 символов). Без ссылок и рекламы."></textarea>
+      <button class="btn btn-primary" type="submit">Отправить на модерацию</button>
+    </form>
+  </div>
+</section>
+
+<section id="beforeafter">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker">Наглядно</div>
+      <h2>До и после</h2>
+      <p class="lead">Потяни ползунок — увидишь разницу между «как обычно» и «если следовать правилам».</p>
+    </div>
+    <div class="ba" id="baContainer">
+      <div class="ba-panel ba-after">
+        <div class="ba-text">
+          <div class="ba-tag">Если следовать правилам</div>
+          <p>Сплю 8 часов. Утром есть силы. Учёба даётся легче, потому что мозг отдохнул.</p>
+          <p>Настроение ровное — не скачет из-за мелочей. Есть 10% отложенных денег и план на пару шагов вперёд.</p>
+          <p>Есть человек, которому доверяю. Знаю, что делать, если станет тяжело.</p>
+        </div>
+      </div>
+      <div class="ba-panel ba-before" id="baBefore">
+        <div class="ba-text">
+          <div class="ba-tag">Как обычно</div>
+          <p>Лёг в 3 ночи — листал телефон. Утром не помню, что объясняли на уроке. Всё бесит.</p>
+          <p>Денег нет — потратил всё на очередной заказ. Друзья токсичные, но «с ними весело».</p>
+          <p>Кажется, что я один такой. И непонятно, к кому идти, если совсем плохо.</p>
+        </div>
+      </div>
+      <div class="ba-handle"></div>
+      <input type="range" min="0" max="100" value="50" class="ba-range" id="baRange" aria-label="Сравнить до и после">
+    </div>
+  </div>
+</section>
+
+<section id="help" class="help-section">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker blue">Если трудно</div>
+      <h2>Куда обратиться</h2>
+      <p class="lead">Ты не обязан справляться в одиночку. Это бесплатно, анонимно и без осуждения.</p>
+    </div>
+    <div class="help-grid">
+      <div class="help-card reveal"><div class="ico"><i class="fa-solid fa-phone"></i></div><h3>Детский телефон доверия</h3><p>Россия: <a href="tel:88002000122">8-800-2000-122</a><br>Украина: <a href="tel:0800500225">0-800-500-225</a><br>Беларусь: <a href="tel:88011001611">8-801-100-16-11</a><br>Казахстан: <a href="tel:111">111</a></p></div>
+      <div class="help-card reveal"><div class="ico"><i class="fa-solid fa-triangle-exclamation"></i></div><h3>Экстренные службы</h3><p>Единый номер: <a href="tel:112">112</a><br>Работает почти во всех странах, даже без SIM-карты и с нулевым балансом.</p></div>
+      <div class="help-card reveal"><div class="ico"><i class="fa-solid fa-comment-dots"></i></div><h3>Поговорить онлайн</h3><p>Если голосом страшно — можно написать. На тех же линиях доверия есть чаты и мессенджеры. Скажи взрослому, которому доверяешь.</p></div>
+    </div>
+    <div class="help-steps">
+      <details><summary>Если травят в школе или в сети</summary><ol><li>Сохрани доказательства — скриншоты переписок и постов.</li><li>Расскажи взрослому, которому доверяешь: родителю, учителю, школьному психологу.</li><li>В соцсетях используй «пожаловаться» и «заблокировать» — это не стыдно.</li><li>Не отвечай агрессией: она только разжигает травлю.</li><li>Если не помогает — звони на телефон доверия.</li></ol></details>
+      <details><summary>Если родители не понимают</summary><ol><li>Попробуй написать письмо — иногда сказать на бумаге проще, чем вслух.</li><li>Выбери спокойный момент, без свидетелей и спешки.</li><li>Говори о своих чувствах: «мне больно, когда...», а не «вы всегда...».</li><li>Есть школьный психолог, классный руководитель, родственник, которому доверяешь.</li><li>Телефон доверия работает и для подростков, и для родителей.</li></ol></details>
+      <details><summary>Техника заземления (если паника)</summary><ol><li>Назови <b>5</b> вещей, которые видишь прямо сейчас.</li><li>Назови <b>4</b> звука, которые слышишь.</li><li>Назови <b>3</b> предмета, которых можешь коснуться.</li><li>Назови <b>2</b> запаха, которые чувствуешь.</li><li>Назови <b>1</b> вкус (или сделай глоток воды).</li><li>Это помогает вернуться в реальность и успокоить нервную систему.</li></ol></details>
+      <details><summary>Если кажется, что ты никому не нужен</summary><ol><li>Это чувство обманывает — оно проходит. Не принимай важных решений на его фоне.</li><li>Позвони на телефон доверия: бесплатно, анонимно, круглосуточно.</li><li>Напиши тому, кому доверяешь — даже если кажется, что «не вовремя».</li><li>Не оставайся один: выйди на улицу, позови кого-то рядом.</li><li>Если есть мысли о причинении себе вреда — обратись к специалисту сегодня, не завтра.</li></ol></details>
+      <details><summary>Если не хватает денег</summary><ol><li>Обсуди с родителями или опекунами — это нормально, а не стыдно.</li><li>Есть бесплатные секции, кружки, библиотеки, онлайн-курсы.</li><li>С 14 лет (в некоторых странах — с 16) возможна официальная подработка с согласия родителей.</li><li>Не бери в долг у незнакомых людей и не оформляй микрозаймы.</li></ol></details>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="quote-block reveal">
+      <p id="typewriterText">«Ты не обязан быть идеальным. Ты обязан быть честным с собой — и хотя бы иногда выбирать то, что делает тебя сильнее».</p>
+      <span>Главное правило, из которого вытекают все остальные</span>
+    </div>
+  </div>
+</section>
+
+<section id="feedback">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker">Обратная связь</div>
+      <h2>Предложи своё правило</h2>
+      <p class="lead">То, что реально помогло тебе. Сообщение уйдёт модератору и после проверки появится на сайте.</p>
+    </div>
+    <form class="form" id="ruleForm" autocomplete="off">
+      <textarea id="ruleText" maxlength="240" placeholder="Например: «Выключай телефон за час до сна — и утром легче вставать»"></textarea>
+      <button class="btn btn-primary" type="submit">Отправить на модерацию</button>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Правила жизни</strong> — не инструкция, а компас. Выбирай то, что подходит именно тебе.</p>
+    <p style="margin-top:10px;opacity:.7">Если тебе тяжело и не с кем поговорить — это не навсегда. Найди взрослого, которому доверяешь. Ты важнее любых правил.</p>
+    <div class="foot-actions">
+      <button class="link-btn" onclick="window.print()">🖨 Распечатать / сохранить PDF</button>
+      <button class="link-btn" id="resetAll">Сбросить настройки</button>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Наверх">↑</button>
+<div class="toast" id="toast"></div>
+<div id="achieve-container"></div>
+
+<div class="modal" id="onboarding" hidden>
+  <div class="modal-card">
+    <h3>Настроим под тебя</h3>
+    <p>Пара вопросов — и правила подсветятся под твою ситуацию. Данные останутся в браузере.</p>
+    <div class="modal-group">
+      <div class="label">Сколько тебе лет?</div>
+      <div class="chips" data-group="age">
+        <button class="chip" type="button" data-value="13-15">13–15</button>
+        <button class="chip" type="button" data-value="16-19">16–19</button>
+      </div>
+    </div>
+    <div class="modal-group">
+      <div class="label">Что волнует больше всего? (можно несколько)</div>
+      <div class="chips" data-group="topics">
+        <button class="chip" type="button" data-value="учеба">Учёба</button>
+        <button class="chip" type="button" data-value="отношения">Отношения</button>
+        <button class="chip" type="button" data-value="деньги">Деньги</button>
+        <button class="chip" type="button" data-value="здоровье">Здоровье</button>
+        <button class="chip" type="button" data-value="будущее">Будущее</button>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" type="button" id="skipOnboard">Пропустить</button>
+      <button class="btn btn-primary" type="button" id="saveOnboard">Готово</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
